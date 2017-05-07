@@ -1,0 +1,39 @@
+' interval measurement
+
+#include "circularBuffer.tbasicu"
+
+type IntervalMeasurement
+  private
+  
+  _stopwatch as ctimer
+  _buffer    as circularBuffer  
+  
+  public
+  
+  function _Create()
+    me._stopwatch = new ctimer
+    me._buffer.SetSize(60)
+  end function
+  
+  '
+  
+  function BeginInterval()
+    me._stopwatch.start
+  end function
+  
+  function EndInterval()
+    me._stopwatch.stop
+    double intervalTime = me._stopwatch.elapsed(%ctimer_milliseconds)
+    me._buffer.AddItem(intervalTime)
+  end function
+
+  '
+    
+  function LastInterval() as single
+    return me._buffer.GetItem(1)
+  end function
+  
+  function GetInterval(index as long) as single
+    return me._buffer.GetItem(index)
+  end function
+end type

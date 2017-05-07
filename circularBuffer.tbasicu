@@ -1,0 +1,28 @@
+' circular buffer
+
+type circularBuffer
+  private
+  
+  items() as number
+  
+  public
+  
+  function SetSize(elementCount as long)
+    redim preserve me.items(elementCount)
+  end function
+  
+  function AddItem(nValue as number)
+    string contents = peek$(varptr(me.items(1)), sizeof(number) * ubound(me.items) - 1)
+    poke$(varptr(me.items(1))+sizeof(number), contents)
+    
+    me.items(1) = nValue
+  end function
+  
+  function GetItem(index as long) as number
+    return me.items(index)
+  end function
+      
+  function ResetItems()
+    reset me.items()
+  end function
+end type
